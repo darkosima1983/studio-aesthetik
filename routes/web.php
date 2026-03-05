@@ -11,6 +11,10 @@ Route::resource('services', ServiceController::class);
 Route::resource('products', ProductController::class);
 Route::resource('appointments', AppointmentController::class);
 Route::resource('messages', MessageController::class);
+
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
