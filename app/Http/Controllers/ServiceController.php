@@ -9,9 +9,10 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index()
     {
-        //
+        $services = \App\Models\Service::all();
+        return view('services.index', compact('services'));
     }
 
     /**
