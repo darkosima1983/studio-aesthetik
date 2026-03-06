@@ -14,9 +14,18 @@
                 <li class="nav-item">
                     <a class="nav-link nav-link-custom" href="{{ url('/services') }}">Dienstleistungen</a>
                 </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom" href="{{ url('/products') }}">
+                        Webshop 
+                        <i class="bi bi-bag-heart ms-1"></i> </a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link nav-link-custom" href="{{ url('/contact') }}">Kontakt</a>
                 </li>
+                
+            </ul>
 
                 <div class="ms-lg-4 d-flex align-items-center">
                     @guest
