@@ -6,98 +6,103 @@
     <title>@yield('title', 'Studio Ästhetik')</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #fcf8f5; }
-        h1, h2, .navbar-brand { font-family: 'Playfair Display', serif; }
-        .hero { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=1350&q=80'); 
-                height: 80vh; background-size: cover; background-position: center; color: white; display: flex; align-items: center; }
-        .btn-gold { background-color: #d4af37; color: white; border: none; }
-        .btn-gold:hover { background-color: #b8962e; color: white; }
+        body { 
+                font-family: 'Poppins', sans-serif; 
+                background-color: #fcf8f5; 
+                /* Ukloni padding-top odavde! */
+            }
 
-        @media (min-width: 992px) {
-            .navbar-nav {
-                flex-direction: row !important;
+            /* Dodajemo klasu koja će gurati sadržaj samo na običnim stranicama */
+            .content-wrapper {
+                margin-top: 100px; 
             }
-            .nav-item {
-                margin-left: 20px;
-            }
+        h1, h2, .navbar-brand, .logo-diamond { font-family: 'Playfair Display', serif; }
+        
+        /* Navigacija Fix */
+        .navbar {
+            min-height: 80px;
+            background-color: white !important;
+            border-bottom: 1px solid #eee;
         }
 
-       
-        .nav-link {
-            color: #555 !important;
-            font-family: 'Poppins', sans-serif;
-            text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 1px;
+        .navbar-nav {
+            display: flex;
+            align-items: center;
         }
 
-        .nav-link:hover, .gold-text {
+        /* Centriranje imena korisnika */
+        #navbarDropdown {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 15px;
             color: #d4a373 !important;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .btn-gold-sm {
-            background-color: #d4a373;
-            color: white !important;
-            padding: 5px 15px;
-            border-radius: 4px;
-            margin-left: 15px;
-        }
-                /* Stil za logo */
         .logo-diamond {
-            font-family: 'Playfair Display', serif;
             font-weight: 700;
             letter-spacing: 3px;
-            color: #d4a373 !important; /* Zlatna boja */
+            color: #d4a373 !important;
             font-size: 1.5rem;
         }
 
-        /* Stil za linkove */
         .nav-link-custom {
             color: #333 !important;
-            font-family: 'Poppins', sans-serif;
             font-size: 0.85rem;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin: 0 5px;
             transition: 0.3s;
         }
 
-        .nav-link-custom:hover {
-            color: #d4a373 !important;
-        }
+        .nav-link-custom:hover { color: #d4a373 !important; }
 
-        /* Dugme za registraciju */
+        /* Dugme */
         .btn-diamond-outline {
             border: 2px solid #d4a373;
             color: #d4a373 !important;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.75rem;
             font-weight: 700;
             padding: 8px 20px;
             border-radius: 4px;
-            transition: 0.3s;
             text-decoration: none;
+            transition: 0.3s;
         }
+        .btn-diamond-outline:hover { background-color: #d4a373; color: white !important; }
 
-        .btn-diamond-outline:hover {
-            background-color: #d4a373;
-            color: white !important;
-        }
-
-        /* Fix za bele dropdown menije */
-        .dropdown-item:hover {
-            background-color: #fcf8f5;
-            color: #d4a373;
+        /* Alert Styling */
+        .alert {
+            border-radius: 15px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
     @include('layouts.navigation')
+
+    <div class="container">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert" style="background-color: #f0fdf4; color: #166534;">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong>Erfolg!</strong> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
 
     <main>
         @yield('content')

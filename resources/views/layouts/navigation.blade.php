@@ -25,35 +25,24 @@
                     <a class="nav-link nav-link-custom" href="{{ url('/contact') }}">Kontakt</a>
                 </li>
                 
-            </ul>
+            <ul class="navbar-nav ms-auto align-items-center">
+                @auth
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" style="color: #d4a373; font-weight: 700; text-transform: uppercase;">
+                            {{ Auth::user()->name }}
+                        </a>
 
-                <div class="ms-lg-4 d-flex align-items-center">
-                    @guest
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-custom me-3" href="{{ route('login') }}">Login</a>
-                        </li>
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="btn btn-diamond-outline" href="{{ route('register') }}">REGISTRIEREN</a>
-                            </li>
-                        @endif
-                    @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle gold-text fw-bold" href="#" role="button" data-bs-toggle="dropdown">
-                                {{ Auth::user()->name }}
+                        <div class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2">
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Abmelden
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Abmelden
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                    @endguest
-                </div>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @endauth
             </ul>
         </div>
     </div>

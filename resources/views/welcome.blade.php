@@ -3,13 +3,17 @@
 @section('title', 'Willkommen | Studio Ästhetik')
 
 @section('content')
-    <header class="hero text-center">
-        <div class="container">
-            <h1 class="display-3 fw-bold">Schönheit beginnt hier</h1>
-            <p class="lead mb-4">Exklusive Behandlungen für Gesicht und Körper, angepasst an Ihre Bedürfnisse.</p>
-            <a href="{{ route('appointments.create') }}" class="btn btn-gold btn-lg px-4 text-uppercase">Termin buchen</a>
+    <header class="hero d-flex align-items-center justify-content-center text-center">
+    <div class="container mt-5">
+        <h1 class="display-3 fw-bold text-white mb-3">Schönheit beginnt hier</h1>
+        <p class="lead mb-5 text-white opacity-90">Exklusive Behandlungen für Gesicht und Körper, angepasst an Ihre Bedürfnisse.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+            <a href="{{ route('appointments.create') }}" class="btn btn-gold btn-lg px-5 py-3 shadow-lg">
+                TERMIN BUCHEN
+            </a>
         </div>
-    </header>
+    </div>
+</header>
 
     <section class="container py-5">
         <div class="row align-items-center">
@@ -49,4 +53,40 @@
             </div>
         </div>
     </section>
+    <style>
+    /* Senka za tekst da se bolje vidi preko slike */
+    .shadow-text {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero {
+        /* Slika mora da ide skroz do vrha, iza navigacije */
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                    url('https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh; /* Pokriva ceo ekran */
+        width: 100%;
+        margin-top: -100px; /* Poništava padding iz layout-a da slika ode do vrha */
+        position: relative;
+    }
+
+    .btn-gold {
+        background-color: #d4a373 !important;
+        color: white !important;
+        border: none;
+        font-weight: 700;
+        letter-spacing: 1px;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-gold:hover {
+        transform: scale(1.05);
+        background-color: #bc8a5f !important;
+    }
+
+    /* Osiguranje da se naslov vidi */
+    .display-3 {
+        text-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+    }
+</style>
 @endsection

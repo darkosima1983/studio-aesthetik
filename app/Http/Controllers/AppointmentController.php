@@ -55,7 +55,7 @@ class AppointmentController extends Controller
         \App\Models\Appointment::create($validated);
 
         return redirect()->route('appointments.index')
-                        ->with('success', 'Vielen Dank! Vaš termin je poslat na odobrenje.');
+                        ->with('success', 'Vielen Dank! Ihre Terminanfrage wurde erfolgreich entgegengenommen und wird in Kürze von uns bestätigt.');
     }
 
     /**
