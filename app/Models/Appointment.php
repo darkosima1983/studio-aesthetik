@@ -2,9 +2,35 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
 {
-    //
+    use HasFactory;
+
+    // Ova polja dozvoljavaju masovni upis (Mass Assignment)
+    protected $fillable = [
+        'user_id',
+        'service_id',
+        'date',
+        'time',
+        'status',
+    ];
+
+    /**
+     * Veza sa korisnikom (Klijentom)
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Veza sa uslugom
+     */
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }
