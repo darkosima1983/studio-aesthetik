@@ -7,35 +7,28 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Prikaz svih termina u admin panelu
-     */
     public function index()
     {
-        // Uzimamo sve termine, sortirane tako da najnoviji zahtevi budu prvi
+        // Uzimamo sve termine, sortirane tako da najnoviji zahtevi budu prvi. 
+        // Koristimo eager loading (with) da smanjimo broj upita bazi.
         $appointments = Appointment::with(['user', 'service'])->latest()->get();
+        
         return view('admin.appointments.index', compact('appointments'));
     }
 
-    /**
-     * Odobravanje termina
-     */
     public function approve($id)
     {
         $appointment = Appointment::findOrFail($id);
         $appointment->update(['status' => 'approved']);
 
-        return back()->with('success', 'Termin je uspešno odobren.');
+        return back()->with('success', 'Termin wurde erfolgreich bestätigt.');
     }
 
-    /**
-     * Odbijanje termina
-     */
     public function reject($id)
     {
         $appointment = Appointment::findOrFail($id);
         $appointment->update(['status' => 'rejected']);
 
-        return back()->with('error', 'Termin je odbijen.');
+        return back()->with('error', 'Der Termin wurde abgelehnt.');
     }
 }

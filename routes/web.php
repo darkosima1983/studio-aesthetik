@@ -29,8 +29,13 @@ Route::resource('appointments', AppointmentController::class);
 Route::resource('messages', MessageController::class);
 
 // 4. Admin Panel (Zaštićeno)
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    // Ovo će biti početna strana kad admin klikne na "Admin Bereich"
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    
     Route::get('/appointments', [AdminController::class, 'index'])->name('admin.appointments.index');
     Route::patch('/appointments/{id}/approve', [AdminController::class, 'approve'])->name('admin.appointments.approve');
     Route::patch('/appointments/{id}/reject', [AdminController::class, 'reject'])->name('admin.appointments.reject');
+    
+    // Ostalo (usluge, proizvodi, poruke) ćemo dodati kasnije u statistiku
 });
