@@ -80,6 +80,7 @@
             border-radius: 15px;
             margin-bottom: 20px;
         }
+        .gold-text { color: #d4a373 !important; }
     </style>
 </head>
 <body>

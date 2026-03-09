@@ -25,7 +25,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // 3. Resursi (Klijentski deo)
 Route::resource('services', ServiceController::class);
 Route::resource('products', ProductController::class);
-Route::resource('appointments', AppointmentController::class);
+Route::resource('appointments', AppointmentController::class)->middleware('auth');
 Route::resource('messages', MessageController::class);
 
 // 4. Admin Panel (Zaštićeno)

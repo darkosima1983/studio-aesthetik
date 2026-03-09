@@ -39,23 +39,29 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+   public function store(Request $request)
     {
+        // 1. Provera autentifikacije (Sigurnosni ventil)
+        if (!auth()->check()) {
+            return redirect()->route('login')
+                ->with('error', 'Bitte melden Sie sich an, um einen Termin zu buchen.');
+        }
+
+        // 2. Validacija podataka
         $validated = $request->validate([
             'service_id' => 'required|exists:services,id',
             'date'       => 'required|date|after_or_equal:today',
             'time'       => 'required',
         ]);
 
-        // Dodajemo user_id trenutno ulogovanog korisnika
+        // 3. Dodavanje user_id-a
         $validated['user_id'] = auth()->id();
-        // Početni status je uvek na čekanju (pending)
         $validated['status']  = 'pending';
 
         \App\Models\Appointment::create($validated);
 
         return redirect()->route('appointments.index')
-                        ->with('success', 'Vielen Dank! Ihre Terminanfrage wurde erfolgreich entgegengenommen und wird in Kürze von uns bestätigt.');
+            ->with('success', 'Vielen Dank! Ihre Terminanfrage wurde gesendet.');
     }
 
     /**

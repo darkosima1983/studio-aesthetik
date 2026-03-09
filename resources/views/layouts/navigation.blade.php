@@ -52,6 +52,11 @@
                     <li class="nav-item ms-lg-3">
                         <a class="nav-link nav-link-custom" href="{{ route('login') }}">Login</a>
                     </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn-diamond-outline nav-link px-3" href="{{ route('register') }}" style="line-height: normal;">
+                            Registrieren
+                        </a>
+                    </li>
                 @endauth
             </ul>
         </div>
