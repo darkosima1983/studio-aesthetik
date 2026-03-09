@@ -23,7 +23,7 @@
                     </p>
                     <p class="card-text text-secondary mb-4">{{ $service->description }}</p>
                     <div class="mt-auto">
-                        <a href="{{ url('/contact') }}" class="btn btn-diamond-outline w-100">TERMIN BUCHEN</a>
+                        <a href="{{ route('appointments.create') }}" class="btn btn-diamond-outline w-100">TERMIN BUCHEN</a>
                     </div>
                 </div>
             </div>

@@ -7,7 +7,7 @@
         <div class="container">
             <h1 class="display-3 fw-bold">Schönheit beginnt hier</h1>
             <p class="lead mb-4">Exklusive Behandlungen für Gesicht und Körper, angepasst an Ihre Bedürfnisse.</p>
-            <a href="/contact" class="btn btn-gold btn-lg px-4 text-uppercase">Termin buchen</a>
+            <a href="{{ route('appointments.create') }}" class="btn btn-gold btn-lg px-4 text-uppercase">Termin buchen</a>
         </div>
     </header>
 

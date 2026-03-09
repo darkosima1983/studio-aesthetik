@@ -9,15 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+   public function up()
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('service_id')->constrained();
+            $table->date('date');
+            $table->time('time');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
-            $table->string('client_name');
-            $table->string('client_email');
-            $table->dateTime('appointment_date');
-            $table->string('status')->default('pending'); // pending, confirmed, finished
         });
     }
 
