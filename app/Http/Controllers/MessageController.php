@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreMessageRequest;
 
 class MessageController extends Controller
 {
@@ -13,25 +14,14 @@ class MessageController extends Controller
     public function index()
     {
         $messages = Message::latest()->get(); // Najnovije poruke prve
-        return view('messages.index', compact('messages'));
+        return view('admin.messages.index', compact('messages'));
     }
 
-    /**
-     * Store: Ovo je metoda koja čuva poruku kada klijent klikne "Pošalji"
-     */
-    public function store(Request $request)
+    public function store(StoreMessageRequest $request)
     {
-        // 1. Validacija podataka
-        $validated = $request->validate([
-            'email'   => 'required|email',
-            'subject' => 'nullable|string|max:255',
-            'content' => 'required|string|min:5',
-        ]);
+        // Laravel automatski validira podatke pre nego što uđe ovde
+        Message::create($request->validated());
 
-        // 2. Čuvanje u bazu
-        Message::create($validated);
-
-        // 3. Povratna informacija klijentu na nemačkom
         return back()->with('success', 'Vielen Dank für Ihre Nachricht! Wir werden uns so schnell wie möglich bei Ihnen melden.');
     }
 

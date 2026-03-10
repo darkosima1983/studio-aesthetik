@@ -14,17 +14,17 @@
             <div class="card border-0 shadow-sm p-4 h-100">
                 <h3 class="mb-4">Schreiben Sie uns</h3>
                 
-                @if(session('success'))
-                    <div class="alert alert-success border-0 shadow-sm">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
+                
                 <form action="{{ route('messages.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">E-Mail Adresse *</label>
-                        <input type="email" name="email" id="email" class="form-control custom-input" placeholder="beispiel@mail.de" required>
+                        <input type="email" name="email" id="email" 
+                            class="form-control custom-input @error('email') is-invalid @enderror" 
+                            value="{{ old('email') }}" required>
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
@@ -34,7 +34,12 @@
 
                     <div class="mb-3">
                         <label for="content" class="form-label">Ihre Nachricht *</label>
-                        <textarea name="content" id="content" rows="6" class="form-control custom-input" placeholder="Wie können wir Ihnen helfen?" required></textarea>
+                        <textarea name="content" id="content" rows="6" 
+                                class="form-control custom-input @error('content') is-invalid @enderror" 
+                                required>{{ old('content') }}</textarea>
+                        @error('content')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-gold w-100 py-3 mt-3 text-uppercase fw-bold">Nachricht Senden</button>

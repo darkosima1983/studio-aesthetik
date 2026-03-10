@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Appointment;
+use App\Http\Requests\StoreAppointmentRequest;
 
 class AppointmentController extends Controller
 {
@@ -36,29 +37,17 @@ class AppointmentController extends Controller
         return view('appointments.create', compact('services', 'slots'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-   public function store(Request $request)
+    
+    public function store(StoreAppointmentRequest $request) 
     {
-        // 1. Provera autentifikacije (Sigurnosni ventil)
-        if (!auth()->check()) {
-            return redirect()->route('login')
-                ->with('error', 'Bitte melden Sie sich an, um einen Termin zu buchen.');
-        }
+      
 
-        // 2. Validacija podataka
-        $validated = $request->validate([
-            'service_id' => 'required|exists:services,id',
-            'date'       => 'required|date|after_or_equal:today',
-            'time'       => 'required',
-        ]);
+        $validated = $request->validated(); // Uzima samo proverene podatke
 
-        // 3. Dodavanje user_id-a
         $validated['user_id'] = auth()->id();
         $validated['status']  = 'pending';
 
-        \App\Models\Appointment::create($validated);
+        Appointment::create($validated);
 
         return redirect()->route('appointments.index')
             ->with('success', 'Vielen Dank! Ihre Terminanfrage wurde gesendet.');

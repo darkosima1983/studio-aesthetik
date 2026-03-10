@@ -2,45 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product; 
-use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Http\Requests\StoreProductRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    // Javan prikaz za klijente
     public function index()
     {
-        $products = Product::all();
+        $products = Product::where('stock', '>', 0)->get();
         return view('products.index', compact('products'));
     }
 
-    public function create()
+    // Admin čuvanje proizvoda
+    public function store(StoreProductRequest $request)
     {
-        return view('products.create');
-    }
+        $validated = $request->validated();
 
-    public function store(Request $request)
-    {
-        // Logika za čuvanje
-    }
+        if ($request->hasFile('image')) {
+            // Čuva sliku u storage/app/public/products i vraća putanju
+            $path = $request->file('image')->store('products', 'public');
+            $validated['image'] = $path;
+        }
 
-    public function show(Product $product)
-    {
-        return view('products.show', compact('product'));
-    }
+        Product::create($validated);
 
-    public function edit(Product $product)
-    {
-        return view('products.edit', compact('product'));
-    }
-
-    public function update(Request $request, Product $product)
-    {
-        // Logika za izmenu
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Produkt wurde erfolgreich erstellt.');
     }
 
     public function destroy(Product $product)
     {
+        // Brišemo i sliku sa servera ako postoji
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
-        return redirect()->route('products.index');
+        return back()->with('success', 'Produkt gelöscht.');
     }
 }
+
