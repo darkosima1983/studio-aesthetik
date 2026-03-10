@@ -2,65 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Service;
+use App\Http\Requests\StoreServiceRequest;
+use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-   public function index()
+    // Lista za klijente (javno)
+    public function index(Request $request)
     {
         $services = Service::all();
+
+        // Ako URL sadrži reč 'admin', pošalji ga na admin tabelu
+        if ($request->is('admin/*')) {
+            return view('admin.services.index', compact('services'));
+        }
+
+        // U suprotnom, pošalji ga na javni cenovnik za klijente
         return view('services.index', compact('services'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Forma za novu uslugu (Admin)
     public function create()
     {
-        //
+        return view('admin.services.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Čuvanje u bazu
+    public function store(StoreServiceRequest $request)
     {
-        //
+        Service::create($request->validated());
+        return redirect()->route('admin.services.index')->with('success', 'Dienstleistung erstellt!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Otvara formu za izmenu
+    public function edit(Service $service)
     {
-        //
+        return view('admin.services.edit', compact('service'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Čuva izmene
+    public function update(StoreServiceRequest $request, Service $service)
     {
-        //
+        $service->update($request->validated());
+
+        return redirect()->route('admin.services.index')
+            ->with('success', 'Dienstleistung wurde aktualisiert!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Brisanje (Admin)
+    public function destroy(Service $service)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $service->delete();
+        return back()->with('success', 'Dienstleistung gelöscht.');
     }
 }

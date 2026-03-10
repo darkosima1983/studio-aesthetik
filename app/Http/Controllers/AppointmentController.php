@@ -9,18 +9,14 @@ use App\Http\Requests\StoreAppointmentRequest;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         // Umesto da tražiš index.blade, samo pozovi create() metodu
         return $this->create();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
    public function create()
     {
         $services = Service::all();

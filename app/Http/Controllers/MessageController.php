@@ -25,23 +25,19 @@ class MessageController extends Controller
         return back()->with('success', 'Vielen Dank für Ihre Nachricht! Wir werden uns so schnell wie möglich bei Ihnen melden.');
     }
 
-    /**
-     * Prikaz jedne konkretne poruke
-     */
+   
     public function show(Message $message)
     {
         // Označimo poruku kao pročitanu kada je otvorimo
         $message->update(['is_read' => true]);
         
-        return view('messages.show', compact('message'));
+        return view('admin.messages.show', compact('message'));
     }
 
-    /**
-     * Brisanje poruke
-     */
+    
     public function destroy(Message $message)
     {
         $message->delete();
-        return redirect()->route('messages.index')->with('success', 'Nachricht gelöscht.');
+        return redirect()->route('admin.messages.index')->with('success', 'Nachricht gelöscht.');
     }
 }
