@@ -45,4 +45,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     //Users
     Route::get('/users', [AdminController::class, 'usersIndex'])->name('users.index');
     Route::get('/users/{user}', [AdminController::class, 'usersShow'])->name('users.show');
+    Route::delete('/users/{user}', [AdminController::class, 'userDestroy'])->name('users.destroy');
+    Route::patch('/users/{user}/notes', [AdminController::class, 'updateNotes'])->name('users.update_notes');
 });

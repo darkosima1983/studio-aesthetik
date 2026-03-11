@@ -62,4 +62,22 @@ class AdminController extends Controller
         $user->load('appointments.service');
         return view('admin.users.show', compact('user'));
     }
+
+    public function userDestroy(\App\Models\User $user)
+    {
+        // Provera da ne obrišeš samog sebe (ako si ulogovan kao taj admin)
+        if (auth()->id() === $user->id) {
+            return back()->with('error', 'Sie können sich nebst selbst löschen!');
+        }
+
+        $user->delete();
+        return redirect()->route('admin.users.index')->with('success', 'Benutzer wurde gelöscht.');
+    }
+
+    public function updateNotes(Request $request, \App\Models\User $user)
+    {
+        $user->update(['notes' => $request->notes]);
+
+        return back()->with('success', 'Notizen wurden aktualisiert!');
+    }
 }

@@ -29,9 +29,19 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->created_at->format('d.m.Y') }}</td>
                         <td class="text-end pe-4">
-                            <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-dark rounded-pill px-3">
-                                Profil ansehen
-                            </a>
+                            <div class="d-flex justify-content-end align-items-center gap-2">
+                                <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-dark rounded-pill px-3">
+                                    Profil ansehen
+                                </a>
+
+                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Möchten Sie diesen Benutzer wirklich löschen?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
