@@ -7,6 +7,9 @@
         <a href="{{ route('admin.services.create') }}" class="btn btn-dark shadow-sm">
             <i class="bi bi-plus-lg me-1"></i> Neue Leistung
         </a>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left me-2"></i>Dashboard
+        </a>
     </div>
 
     <div class="card border-0 shadow-sm">

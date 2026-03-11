@@ -14,10 +14,13 @@ class AdminController extends Controller
 
     public function index()
     {
-        // 1. Uzimamo sve termine sa podacima o korisniku i usluzi
-        $appointments = Appointment::with(['user', 'service'])->latest()->get();
         
-        // 2. Kreiramo stats niz koji tvoj Blade traži na liniji 21
+        $appointments = Appointment::with(['user', 'service'])
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->get();
+            
+       
         $stats = [
             'pending'  => Appointment::where('status', 'pending')->count(),
             'today'    => Appointment::where('date', now()->toDateString())->count(),
@@ -25,7 +28,7 @@ class AdminController extends Controller
             'products' => Product::count(),
         ];
 
-        // 3. Šaljemo OBE varijable u view
+       
         return view('admin.appointments.index', compact('appointments', 'stats'));
     }
     
@@ -44,5 +47,19 @@ class AdminController extends Controller
         $appointment->update(['status' => 'rejected']);
 
         return back()->with('error', 'Der Termin wurde abgelehnt.');
+    }
+
+    public function usersIndex() 
+    {
+        // Uzimamo sve korisnike koji nisu admini
+        $users = \App\Models\User::where('role', 'user')->get();
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function usersShow(\App\Models\User $user) 
+    {
+        // Učitavamo korisnika i njegove termine sa povezanim servisima
+        $user->load('appointments.service');
+        return view('admin.users.show', compact('user'));
     }
 }

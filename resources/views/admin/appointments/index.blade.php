@@ -65,14 +65,64 @@
     </div>
 
     <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 fw-bold">Alle Terminanfragen</h5>
-            <div class="btn-group shadow-sm">
-                <a href="{{ route('admin.services.index') }}" class="btn btn-sm btn-outline-dark">Services</a>
-                <a href="{{ route('admin.products.index') }}" class="btn btn-sm btn-outline-dark">Webshop</a>
-                <a href="{{ route('admin.messages.index') }}" class="btn btn-sm btn-outline-dark">Nachrichten</a>
+            <div class="row g-3 mb-4">
+            <div class="col-md-3 col-sm-6">
+                <a href="{{ route('admin.services.index') }}" class="card border-0 shadow-sm text-decoration-none admin-nav-card h-100">
+                    <div class="card-body d-flex align-items-center p-3">
+                        <div class="icon-circle bg-dark text-white me-3">
+                            <i class="bi bi-scissors"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold text-dark">Services</h6>
+                            <small class="text-muted">Preise & Dauer</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <a href="{{ route('admin.products.index') }}" class="card border-0 shadow-sm text-decoration-none admin-nav-card h-100">
+                    <div class="card-body d-flex align-items-center p-3">
+                        <div class="icon-circle bg-gold-dark text-white me-3">
+                            <i class="bi bi-bag-heart"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold text-dark">Webshop</h6>
+                            <small class="text-muted">Produkte</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <a href="{{ route('admin.messages.index') }}" class="card border-0 shadow-sm text-decoration-none admin-nav-card h-100">
+                    <div class="card-body d-flex align-items-center p-3">
+                        <div class="icon-circle bg-info text-white me-3">
+                            <i class="bi bi-chat-left-text"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold text-dark">Nachrichten</h6>
+                            <small class="text-muted">Anfragen</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <a href="{{ route('admin.users.index') }}" class="card border-0 shadow-sm text-decoration-none admin-nav-card h-100">
+                    <div class="card-body d-flex align-items-center p-3">
+                        <div class="icon-circle bg-primary text-white me-3">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold text-dark">Kunden</h6>
+                            <small class="text-muted">Profile</small>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
+            </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light">
@@ -86,6 +136,15 @@
                 </thead>
                 <tbody>
                     @forelse($appointments as $app)
+                    <tr @if($app->date == now()->toDateString()) class="table-primary-light" @endif>
+                        <td>
+                            @if($app->date == now()->toDateString())
+                                <span class="badge bg-primary mb-1">Danas</span><br>
+                            @endif
+                            <div><i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($app->date)->format('d.m.Y') }}</div>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i> {{ \Carbon\Carbon::parse($app->time)->format('H:i') }} Uhr</small>
+                        </td>
+                    </tr>
                     <tr>
                         <td class="ps-4">
                             <div class="fw-bold">{{ $app->user->name }}</div>
