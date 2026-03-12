@@ -123,6 +123,12 @@
             </div>
         </div>
             </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Terminverwaltung</h2>
+                <a href="{{ route('admin.appointments.create') }}" class="btn btn-dark shadow-sm">
+                    <i class="bi bi-plus-lg me-1"></i> Neuer Slot freischalten
+                </a>
+            </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light">
@@ -137,30 +143,28 @@
                 <tbody>
                     @forelse($appointments as $app)
                     <tr @if($app->date == now()->toDateString()) class="table-primary-light" @endif>
-                        <td>
-                            @if($app->date == now()->toDateString())
-                                <span class="badge bg-primary mb-1">Danas</span><br>
-                            @endif
-                            <div><i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($app->date)->format('d.m.Y') }}</div>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> {{ \Carbon\Carbon::parse($app->time)->format('H:i') }} Uhr</small>
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="ps-4">
-                            <div class="fw-bold">{{ $app->user->name }}</div>
-                            <small class="text-muted">{{ $app->user->email }}</small>
+                            <div class="fw-bold">{{ $app->user ? $app->user->name : 'SLOBODAN SLOT' }}</div>
+                            <small class="text-muted">{{ $app->user ? $app->user->email : 'Nema korisnika' }}</small>
                         </td>
                         <td>
                             <span class="badge rounded-pill bg-light text-dark border">
-                                {{ $app->service->name }}
+                                {{ $app->service->name ?? '---' }}
                             </span>
                         </td>
                         <td>
-                            <div><i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($app->date)->format('d.m.Y') }}</div>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> {{ $app->time }} Uhr</small>
+                            <div>
+                                @if($app->date == now()->toDateString())
+                                    <span class="badge bg-primary small mb-1">Danas</span><br>
+                                @endif
+                                <i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($app->date)->format('d.m.Y') }}
+                            </div>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i> {{ \Carbon\Carbon::parse($app->time)->format('H:i') }} Uhr</small>
                         </td>
                         <td>
-                            @if($app->status == 'pending')
+                            @if(!$app->user_id)
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">FREI</span>
+                            @elseif($app->status == 'pending')
                                 <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Offen</span>
                             @elseif($app->status == 'approved')
                                 <span class="badge bg-success"><i class="bi bi-check-circle"></i> Bestätigt</span>
@@ -169,22 +173,26 @@
                             @endif
                         </td>
                         <td class="text-end pe-4">
-                            @if($app->status == 'pending')
-                            <form action="{{ route('admin.appointments.approve', $app) }}" method="POST" class="d-inline">
-                                @csrf @method('PATCH')
-                                <button class="btn btn-sm btn-success shadow-sm" title="Bestätigen">
-                                    <i class="bi bi-check-lg"></i>
-                                </button>
-                            </form>
-                            <form action="{{ route('admin.appointments.reject', $app) }}" method="POST" class="d-inline">
-                                @csrf @method('PATCH')
-                                <button class="btn btn-sm btn-outline-danger shadow-sm" title="Ablehnen">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                            @else
-                                <span class="text-muted small italic">Erledigt</span>
-                            @endif
+                            <div class="d-flex justify-content-end gap-2">
+                                {{-- Dugme za odobravanje (samo ako je na čekanju i ima korisnika) --}}
+                                @if($app->status == 'pending' && $app->user_id)
+                                <form action="{{ route('admin.appointments.approve', $app) }}" method="POST" class="d-inline">
+                                    @csrf @method('PATCH')
+                                    <button class="btn btn-sm btn-success shadow-sm" title="Bestätigen">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                </form>
+                                @endif
+
+                                {{-- CRVENO DUGME ZA BRISANJE (Radi i za slotove i za termine) --}}
+                                <form action="{{ route('admin.appointments.destroy', $app->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Möchten Sie ovaj slot/termin trajno obrisati?')">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow-sm" title="Löschen">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

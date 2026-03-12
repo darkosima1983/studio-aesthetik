@@ -17,36 +17,36 @@ class AppointmentController extends Controller
     }
 
     
-   public function create()
+  public function create() 
     {
         $services = Service::all();
-        
-        // Generisanje slobodnih slotova
-        $slots = [];
-        $start = 10;
-        $end = 18;
-        
-        for ($i = $start; $i < $end; $i++) {
-            $slots[] = sprintf('%02d:00', $i);
-        }
+        $availableAppointments = Appointment::whereNull('user_id')
+            ->where('date', '>=', now()->toDateString())
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->get();
 
-        return view('appointments.create', compact('services', 'slots'));
+        return view('appointments.create', compact('services', 'availableAppointments'));
     }
 
-    
-    public function store(StoreAppointmentRequest $request) 
+    public function store(Request $request)
     {
-      
+        // 1. Klijent šalje ID slota koji je izabrao
+        $appointment = Appointment::findOrFail($request->appointment_id);
 
-        $validated = $request->validated(); // Uzima samo proverene podatke
+        // 2. Proveravamo da li je slot još uvek slobodan
+        if ($appointment->user_id !== null) {
+            return back()->with('error', 'Dieser Termin wurde gerade eben von jemand anderem gebucht.');
+        }
 
-        $validated['user_id'] = auth()->id();
-        $validated['status']  = 'pending';
+        // 3. Upisujemo klijenta u taj slot
+        $appointment->update([
+            'user_id' => auth()->id(),
+            'service_id' => $request->service_id, // Klijent bira koju uslugu želi u tom terminu
+            'status' => 'pending' // Čeka tvoje odobrenje na dashboardu
+        ]);
 
-        Appointment::create($validated);
-
-        return redirect()->route('appointments.index')
-            ->with('success', 'Vielen Dank! Ihre Terminanfrage wurde gesendet.');
+        return redirect()->route('welcome')->with('success', 'Vielen Dank! Wir prüfen Ihren Terminwunsch.');
     }
 
     /**

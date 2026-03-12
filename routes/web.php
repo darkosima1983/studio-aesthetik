@@ -29,8 +29,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Dashboard & Termini
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/appointments', [AdminController::class, 'index'])->name('appointments.index');
+    Route::get('/appointments/create', [AdminController::class, 'createSlot'])->name('appointments.create');
+    Route::post('/appointments/slot', [AdminController::class, 'storeSlot'])->name('appointments.storeSlot');
+    
+    // Akcije nad terminima
     Route::patch('/appointments/{appointment}/approve', [AdminController::class, 'approve'])->name('appointments.approve');
     Route::patch('/appointments/{appointment}/reject', [AdminController::class, 'reject'])->name('appointments.reject');
+    Route::delete('/appointments/{appointment}', [AdminController::class, 'destroy'])->name('appointments.destroy');
 
     // CRUD za Usluge i Proizvode (Admin deo)
     // .names('services') automatski pravi admin.services.index, admin.services.create itd.
