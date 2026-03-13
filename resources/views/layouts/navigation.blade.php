@@ -38,9 +38,15 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Abmelden
+                            <a class="dropdown-item mb-1" href="{{ route('profile.index') }}">
+                                <i class="bi bi-person me-2"></i> Mein Profil
+                            </a>
+                            
+                            <div class="dropdown-divider"></div> {{-- Opciona linija za razdvajanje --}}
+
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="bi bi-box-arrow-right me-2"></i> Abmelden
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

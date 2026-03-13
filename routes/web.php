@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserProfileController;
 
 // 1. JAVNE RUTE
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -52,4 +53,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users/{user}', [AdminController::class, 'usersShow'])->name('users.show');
     Route::delete('/users/{user}', [AdminController::class, 'userDestroy'])->name('users.destroy');
     Route::patch('/users/{user}/notes', [AdminController::class, 'updateNotes'])->name('users.update_notes');
+
+    
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [UserProfileController::class, 'index'])->name('profile.index');
 });
