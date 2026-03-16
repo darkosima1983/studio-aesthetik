@@ -8,7 +8,9 @@ use App\Models\Service;
 use App\Models\Product;
 use App\Models\Message;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentApproved;
+use App\Mail\AppointmentCancelled;
 class AdminController extends Controller
 {
     /**
@@ -66,6 +68,8 @@ class AdminController extends Controller
     public function approve(Appointment $appointment)
     {
         $appointment->update(['status' => 'approved']);
+
+        Mail::to($appointment->user->email)->send(new AppointmentApproved($appointment));
         return back()->with('success', 'Termin wurde erfolgreich bestätigt.');
     }
 
@@ -79,8 +83,14 @@ class AdminController extends Controller
     // 4. Brisanje termina ili slota zauvek
     public function destroy(Appointment $appointment) 
     {
+        // Ako termin pripada korisniku (nije samo prazan slot), pošalji mejl
+        if ($appointment->user) {
+            Mail::to($appointment->user->email)->send(new AppointmentCancelled($appointment));
+        }
+
         $appointment->delete();
-        return back()->with('success', 'Slot/Termin wurde gelöscht.');
+
+        return back()->with('success', 'Termin gelöscht und Kunde benachrichtigt.');
     }
     public function createSlot()
     {
