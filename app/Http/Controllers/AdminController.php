@@ -46,25 +46,27 @@ class AdminController extends Controller
      */
 
     // 1. Stvaranje PRAZNOG slota koji klijenti vide
-    public function storeSlot(Request $request) 
+   public function storeSlot(Request $request)
     {
-        $request->validate([
-            'date' => 'required|date',
-            'time' => 'required',
-            'service_id' => 'required|exists:services,id'
-        ]);
+        // Provera da li već postoji ovakav termin
+        $exists = Appointment::where('date', $request->date)
+                            ->where('time', $request->time)
+                            ->exists();
 
+        if ($exists) {
+            return back()->with('error', 'Dieser Termin existiert bereits!');
+        }
+
+        // Ako ne postoji, napravi ga
         Appointment::create([
-            'user_id' => null, 
-            'service_id' => $request->service_id,
             'date' => $request->date,
             'time' => $request->time,
-            'status' => 'approved' 
+            'user_id' => null,
+            'status' => null
         ]);
 
-        return back()->with('success', 'Freier Slot wurde erfolgreich erstellt!');
+        return back()->with('success', 'Termin erstellt.');
     }
-
     // 2. Potvrda termina kada se klijent prijavi
     public function approve(Appointment $appointment)
     {

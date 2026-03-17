@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('service_id')->constrained();
             $table->date('date');
             $table->time('time');
-            $table->enum('status', ['pending', 'approved', 'cancelled'])->default('pending');
+            
+            // Ova linija sprečava duplikate na nivou same baze podataka:
+            $table->unique(['date', 'time']); 
+
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('service_id')->nullable()->constrained();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
