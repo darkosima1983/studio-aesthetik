@@ -11,7 +11,10 @@ class ProductController extends Controller
     // Javan prikaz za klijente
     public function index()
     {
-        $products = Product::where('stock', '>', 0)->get();
+        // Uzimamo sve proizvode iz baze (koje si ubacio preko seedera)
+        $products = \App\Models\Product::all();
+
+        // Šaljemo ih u view
         return view('products.index', compact('products'));
     }
 

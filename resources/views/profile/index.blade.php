@@ -63,6 +63,15 @@
                                         @else
                                             <span class="badge bg-light text-muted border rounded-pill px-3">Storniert</span>
                                         @endif
+
+                                        {{-- DUGME ZA OTKAZIVANJE DIREKTNO U TABELI --}}
+                                        @if($app->status !== 'cancelled')
+                                            <form action="{{ route('appointments.cancel', $app->id) }}" method="POST" class="d-inline ms-2" onsubmit="return confirm('Möchtest du diesen Termin wirklich absagen?')">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-link btn-sm text-danger p-0">Stornieren</button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

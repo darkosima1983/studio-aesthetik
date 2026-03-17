@@ -2,36 +2,27 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Product;
 
 class ProductSeeder extends Seeder
 {
-   public function run(): void
-{
-    $products = [
-        [
-            'name' => 'Diamond Glow Serum',
-            'price' => 59.90,
-            'description' => 'Hochkonzentriertes Vitamin C Serum für strahlende Haut.',
-            'stock' => 15
-        ],
-        [
-            'name' => 'Nachtcreme Arganöl',
-            'price' => 34.50,
-            'description' => 'Reichhaltige Pflege für die Regeneration über Nacht.',
-            'stock' => 10
-        ],
-        [
-            'name' => 'Reinigungsmilch Sanft',
-            'price' => 19.00,
-            'description' => 'Milde Reinigung für empfindliche Gesichtshaut.',
-            'stock' => 20
-        ],
-    ];
-
-    foreach ($products as $product) {
-        \App\Models\Product::create($product);
+    public function run(): void
+    {
+        Product::create([
+            'name' => 'Hyaluron Serum', 
+            'price' => 49.90, 
+            'description' => 'Hochkonzentriertes Serum für intensive Feuchtigkeit.'
+        ]);
+        Product::create([
+            'name' => 'Reinigungsmilch Sanft', 
+            'price' => 24.50, 
+            'description' => 'Besonders mild für empfindliche Haut.'
+        ]);
+        Product::create([
+            'name' => 'Tagespflege LSF 30', 
+            'price' => 38.00, 
+            'description' => 'Schützt vor UV-Strahlen und pflegt den ganzen Tag.'
+        ]);
     }
-}
 }

@@ -10,10 +10,22 @@ use App\Http\Requests\StoreAppointmentRequest;
 class AppointmentController extends Controller
 {
     
-    public function index()
+   public function index()
     {
-        // Umesto da tražiš index.blade, samo pozovi create() metodu
-        return $this->create();
+        $user = auth()->user(); // Podaci o ulogovanom korisniku
+
+        // Uzimamo termine koji pripadaju ovom korisniku
+        $appointments = Appointment::with('service')
+            ->where('user_id', $user->id)
+            ->orderBy('date', 'desc')
+            ->get();
+
+        // Prosleđujemo obe varijable koje Blade traži
+        return view('profile.index', [
+            'user' => $user,
+            'appointments' => $appointments,
+            'myAppointments' => $appointments // Dodajemo i ovo jer ga koristiš na dnu blade-a
+        ]);
     }
 
     
@@ -46,7 +58,21 @@ class AppointmentController extends Controller
             'status' => 'pending' // Čeka tvoje odobrenje na dashboardu
         ]);
 
-        return redirect()->route('welcome')->with('success', 'Vielen Dank! Wir prüfen Ihren Terminwunsch.');
+        return redirect()->back()->with('success', 'Vielen Dank! Wir prüfen Ihren Terminwunsch.');
+    }
+    public function cancel(Appointment $appointment)
+    {
+        // Provera da li klijent pokušava da otkaže svoj termin, a ne tuđi
+        if (auth()->id() !== $appointment->user_id) {
+            abort(403);
+        }
+
+        // Menjamo status u cancelled umesto da brišemo, 
+        // kako bi admin video u istoriji da je klijent otkazao
+        $appointment->update(['status' => 'cancelled']);
+
+        // Vraćamo ga nazad sa porukom u aplikaciji
+        return back()->with('success', 'Dein Termin wurde erfolgreich storniert.');
     }
 
     /**

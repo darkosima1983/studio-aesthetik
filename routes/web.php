@@ -19,7 +19,10 @@ Auth::routes();
 // 3. KLIJENTSKI RESURSI
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::resource('appointments', AppointmentController::class)->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::patch('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::resource('appointments', AppointmentController::class);
+});
 
 // SAMO store ruta za klijente da pošalju poruku
 Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');

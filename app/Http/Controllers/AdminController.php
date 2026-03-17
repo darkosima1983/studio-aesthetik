@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppointmentApproved;
 use App\Mail\AppointmentCancelled;
+
 class AdminController extends Controller
 {
     /**

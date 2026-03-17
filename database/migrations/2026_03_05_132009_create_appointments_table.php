@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained();
             $table->date('date');
             $table->time('time');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }
