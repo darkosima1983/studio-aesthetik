@@ -44,7 +44,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // CRUD za Usluge i Proizvode (Admin deo)
     // .names('services') automatski pravi admin.services.index, admin.services.create itd.
     Route::resource('services', ServiceController::class)->names('services');
-    Route::resource('products', ProductController::class)->names('products');
+    
+    Route::get('products', [ProductController::class, 'adminIndex'])->name('products.index');
+    Route::resource('products', ProductController::class)->except(['index'])->names('products');
 
     // Upravljanje Porukama (Admin pregled i brisanje)
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');

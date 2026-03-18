@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('stock')->default(0); // Stanje na skladištu
             $table->string('image')->nullable(); // Putanja do slike
+            $table->string('category')->nullable(); 
         });
     }
 
