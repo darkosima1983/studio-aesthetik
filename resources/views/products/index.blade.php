@@ -15,8 +15,10 @@
                 <div class="product-image-container rounded-top overflow-hidden bg-light" style="height: 250px;">
                     @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" 
-                             alt="{{ $product->name }}" 
-                             class="product-img transition-all">
+                            alt="{{ $product->name }}" 
+                            class="product-img transition-all"
+                            {{-- ZAMENI CSS --}}
+                            style="width: 100%; height: 100%; object-fit: contain; object-position: center;">
                     @else
                         {{-- Placeholder ako nema slike --}}
                         <div class="d-flex align-items-center justify-content-center h-100">
