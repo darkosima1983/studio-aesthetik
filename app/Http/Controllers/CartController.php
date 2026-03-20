@@ -80,6 +80,7 @@ class CartController extends Controller
 
         // 1. Kreiraj glavnu porudžbinu
         $order = Order::create([
+            'user_id' => auth()->id(),
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -88,6 +89,7 @@ class CartController extends Controller
             'city' => $validated['city'],
             'total_price' => $total,
             'payment_method' => $validated['payment_method'],
+            'status'         => 'pending',
         ]);
 
         // 2. Kreiraj stavke porudžbine
