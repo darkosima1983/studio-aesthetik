@@ -17,7 +17,6 @@
                         <img src="{{ asset('storage/' . $product->image) }}" 
                             alt="{{ $product->name }}" 
                             class="product-img transition-all"
-                            {{-- ZAMENI CSS --}}
                             style="width: 100%; height: 100%; object-fit: contain; object-position: center;">
                     @else
                         {{-- Placeholder ako nema slike --}}
@@ -52,9 +51,12 @@
                         @endif
                     </div>
 
-                    <button class="btn btn-diamond-outline w-100 py-2 fw-bold text-uppercase">
-                        In den Warenkorb
-                    </button>
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-diamond-outline w-100 py-2 fw-bold text-uppercase">
+                            In den Warenkorb
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppointmentApproved;
 use App\Mail\AppointmentCancelled;
+use App\Models\Order;
 
 class AdminController extends Controller
 {
@@ -27,18 +28,19 @@ class AdminController extends Controller
             ->get();
             
         // Statistika za Dashboard kartice
-        $stats = [
-            'pending'  => Appointment::where('status', 'pending')->count(),
-            'today'    => Appointment::where('date', now()->toDateString())->count(),
-            'messages' => Message::where('is_read', false)->count(),
-            'products' => Product::count(),
+       $stats = [
+            'pending_orders' => Order::where('status', 'pending')->count(), // Nove porudžbine
+            'products'       => Product::count(),
+            'pending'        => Appointment::where('status', 'pending')->count(), // Zahtevi za termine
+            'today'          => Appointment::whereDate('date', now())->count(),
+            'messages'       => Message::where('is_read', false)->count(),
         ];
 
         // Razdvajamo ih (opciono, ako želiš da ih u blade-u koristiš odvojeno)
         $booked = $appointments->whereNotNull('user_id');
         $availableSlots = $appointments->whereNull('user_id');
-
-        return view('admin.appointments.index', compact('appointments', 'stats', 'booked', 'availableSlots'));
+        $latest_orders = \App\Models\Order::orderBy('created_at', 'desc')->take(5)->get();
+        return view('admin.appointments.index', compact('appointments', 'stats', 'booked', 'availableSlots', 'latest_orders'));
     }
 
     /**

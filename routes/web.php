@@ -8,6 +8,8 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\Admin\OrderController;
 
 // 1. JAVNE RUTE
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -59,9 +61,24 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{user}', [AdminController::class, 'userDestroy'])->name('users.destroy');
     Route::patch('/users/{user}/notes', [AdminController::class, 'updateNotes'])->name('users.update_notes');
 
+    // Rute za porudžbine
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserProfileController::class, 'index'])->name('profile.index');
+
 });
+
+// Korpa rute
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+
+// Checkout (privremeno samo view)
+Route::get('/checkout', function() { return view('cart.checkout'); })->name('checkout');
+Route::post('/place-order', [CartController::class, 'placeOrder'])->name('order.place');

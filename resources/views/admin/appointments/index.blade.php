@@ -10,8 +10,21 @@
         <span class="badge bg-dark px-3 py-2 rounded-pill shadow-sm">{{ now()->format('d.m.Y') }}</span>
     </div>
 
-    {{-- Statistike (Gornji red) --}}
+    {{-- STATISTIKE (Gornji red) --}}
     <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3 border-start border-gold-dark border-4 h-100">
+                <div class="d-flex align-items-center">
+                    <div class="icon-box bg-gold-dark bg-opacity-10 text-gold-dark me-3 p-3 rounded">
+                        <i class="bi bi-cart-check fs-3"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-0 small text-uppercase">Neue Bestellungen</h6>
+                        <h3 class="fw-bold mb-0 text-gold-dark">{{ $stats['pending_orders'] }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3 border-start border-warning border-4 h-100">
                 <div class="d-flex align-items-center">
@@ -19,21 +32,8 @@
                         <i class="bi bi-clock-history fs-3"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted mb-0 small text-uppercase">Neu Anfragen</h6>
+                        <h6 class="text-muted mb-0 small text-uppercase">Terminanfragen</h6>
                         <h3 class="fw-bold mb-0">{{ $stats['pending'] }}</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3 border-start border-success border-4 h-100">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-success bg-opacity-10 text-success me-3 p-3 rounded">
-                        <i class="bi bi-calendar-check fs-3"></i>
-                    </div>
-                    <div>
-                        <h6 class="text-muted mb-0 small text-uppercase">Heute Termine</h6>
-                        <h3 class="fw-bold mb-0">{{ $stats['today'] }}</h3>
                     </div>
                 </div>
             </div>
@@ -66,21 +66,21 @@
         </div>
     </div>
 
-    {{-- Brzi linkovi (Srednji red) --}}
+    {{-- BRZI LINKOVI (Srednji red) --}}
     <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6">
+            <a href="{{ route('admin.orders.index') }}" class="card border-0 shadow-sm text-decoration-none h-100 admin-nav-card border-bottom border-gold-dark border-3">
+                <div class="card-body d-flex align-items-center p-3">
+                    <div class="icon-circle bg-gold-dark text-white me-3"><i class="bi bi-receipt"></i></div>
+                    <div><h6 class="mb-0 fw-bold text-dark small">Bestellungen</h6></div>
+                </div>
+            </a>
+        </div>
         <div class="col-md-3 col-6">
             <a href="{{ route('admin.services.index') }}" class="card border-0 shadow-sm text-decoration-none h-100 admin-nav-card">
                 <div class="card-body d-flex align-items-center p-3">
                     <div class="icon-circle bg-dark text-white me-3"><i class="bi bi-scissors"></i></div>
                     <div><h6 class="mb-0 fw-bold text-dark small">Services</h6></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="{{ route('admin.products.index') }}" class="card border-0 shadow-sm text-decoration-none h-100 admin-nav-card">
-                <div class="card-body d-flex align-items-center p-3">
-                    <div class="icon-circle bg-warning text-white me-3"><i class="bi bi-bag-heart"></i></div>
-                    <div><h6 class="mb-0 fw-bold text-dark small">Webshop</h6></div>
                 </div>
             </a>
         </div>
@@ -102,92 +102,110 @@
         </div>
     </div>
 
-    {{-- Tabela Termina --}}
-    <div class="card border-0 shadow-sm p-4" style="border-radius: 15px;">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2"></i>Terminverwaltung</h4>
-            <a href="{{ route('admin.appointments.create') }}" class="btn btn-dark btn-sm rounded-pill px-3 shadow-sm">
-                <i class="bi bi-plus-lg me-1"></i> Neuer Slot
-            </a>
+    <div class="row g-4">
+        {{-- LEVA STRANA: Termini --}}
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 15px;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0 small-caps"><i class="bi bi-calendar3 me-2 text-gold-dark"></i>Terminverwaltung</h4>
+                    <a href="{{ route('admin.appointments.create') }}" class="btn btn-dark btn-sm rounded-pill px-3 shadow-sm">
+                        <i class="bi bi-plus-lg me-1"></i> Neuer Slot
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Kunde</th>
+                                <th>Dienstleistung</th>
+                                <th>Datum & Zeit</th>
+                                <th>Status</th>
+                                <th class="text-end">Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($appointments as $app)
+                            <tr @if($app->date == now()->toDateString()) class="table-active" @endif>
+                                <td>
+                                    @if($app->user)
+                                        <div class="fw-bold text-dark">{{ $app->user->name }}</div>
+                                        <small class="text-muted">{{ $app->user->email }}</small>
+                                    @else
+                                        <div class="text-muted italic small"><i class="bi bi-unlock"></i> Freier Slot</div>
+                                    @endif
+                                </td>
+                                <td><span class="badge bg-light text-dark border">{{ $app->service->name ?? '---' }}</span></td>
+                                <td>
+                                    <div class="fw-bold small">{{ \Carbon\Carbon::parse($app->date)->format('d.m.Y') }}</div>
+                                    <small class="text-muted">{{ \Carbon\Carbon::parse($app->time)->format('H:i') }} Uhr</small>
+                                </td>
+                                <td>
+                                    @php
+                                        $statusClasses = [
+                                            'pending' => 'bg-warning text-dark',
+                                            'approved' => 'bg-dark text-white',
+                                            'cancelled' => 'bg-light text-muted'
+                                        ];
+                                        $class = $app->user_id ? ($statusClasses[$app->status] ?? 'bg-secondary') : 'bg-success bg-opacity-10 text-success border border-success';
+                                        $label = $app->user_id ? strtoupper($app->status) : 'OFFEN';
+                                    @endphp
+                                    <span class="badge px-2 rounded-pill {{ $class }}">{{ $label }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        @if($app->status == 'pending' && $app->user_id)
+                                        <form action="{{ route('admin.appointments.approve', $app) }}" method="POST">
+                                            @csrf @method('PATCH')
+                                            <button class="btn btn-sm btn-success rounded-circle"><i class="bi bi-check"></i></button>
+                                        </form>
+                                        @endif
+                                        <form action="{{ route('admin.appointments.destroy', $app->id) }}" method="POST" onsubmit="return confirm('Löschen?')">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger rounded-circle"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr><td colspan="5" class="text-center py-4">Keine Termine.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="bg-light">
-                    <tr>
-                        <th class="ps-4">Kunde</th>
-                        <th>Dienstleistung</th>
-                        <th>Datum & Zeit</th>
-                        <th>Status</th>
-                        <th class="text-end pe-4">Aktionen</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($appointments as $app)
-                    <tr @if($app->date == now()->toDateString()) style="background-color: #f8faff;" @endif>
-                        <td class="ps-4">
-                            @if($app->user)
-                                <a href="{{ route('admin.users.show', $app->user->id) }}" class="text-decoration-none">
-                                    <div class="fw-bold text-dark">{{ $app->user->name }}</div>
-                                    <small class="text-muted">{{ $app->user->email }}</small>
-                                </a>
-                            @else
-                                <div class="fw-bold text-secondary text-opacity-50"><i class="bi bi-unlock me-1"></i> FREIER SLOT</div>
-                                <small class="text-muted" style="font-size: 0.75rem;">Verfügbar</small>
-                            @endif
-                        </td>
-                        <td>
-                            <span class="badge rounded-pill bg-light text-dark border px-3">
-                                {{ $app->service->name ?? '---' }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="fw-bold text-dark">
-                                @if($app->date == now()->toDateString())
-                                    <span class="badge bg-primary me-2">HEUTE</span>
-                                @endif
-                                {{ \Carbon\Carbon::parse($app->date)->format('d.m.Y') }}
+        {{-- DESNA STRANA: Poslednje porudžbine --}}
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 15px;">
+                <h4 class="fw-bold mb-4 small-caps"><i class="bi bi-receipt me-2 text-gold-dark"></i>Letzte Verkäufe</h4>
+                
+                <div class="order-list">
+                    @forelse($latest_orders as $order)
+                    <div class="d-flex align-items-center mb-3 p-2 rounded hover-bg-light border-bottom pb-3">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle bg-gold-dark bg-opacity-10 text-gold-dark rounded-circle" style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-bag-check"></i>
                             </div>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> {{ \Carbon\Carbon::parse($app->time)->format('H:i') }} Uhr</small>
-                        </td>
-                        <td>
-                            @if(!$app->user_id)
-                                <span class="badge bg-success bg-opacity-10 text-success border border-success">OFFEN</span>
-                            @elseif($app->status == 'pending')
-                                <span class="badge bg-warning text-dark px-3 rounded-pill">ANFRAGE</span>
-                            @elseif($app->status == 'approved')
-                                <span class="badge bg-dark px-3 rounded-pill text-white">BESTÄTIGT</span>
-                            @else
-                                <span class="badge bg-light text-muted border px-3 rounded-pill">STORNO</span>
-                            @endif
-                        </td>
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end gap-2">
-                                @if($app->status == 'pending' && $app->user_id)
-                                <form action="{{ route('admin.appointments.approve', $app) }}" method="POST">
-                                    @csrf @method('PATCH')
-                                    <button class="btn btn-sm btn-success shadow-sm rounded-circle" title="Bestätigen">
-                                        <i class="bi bi-check-lg"></i>
-                                    </button>
-                                </form>
-                                @endif
-
-                                <form action="{{ route('admin.appointments.destroy', $app->id) }}" method="POST" onsubmit="return confirm('Trajno obrisati?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow-sm rounded-circle" title="Löschen">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0 fw-bold">{{ $order->first_name }} {{ $order->last_name }}</h6>
+                            <small class="text-muted">{{ number_format($order->total_price, 2) }} € • {{ $order->created_at->diffForHumans() }}</small>
+                        </div>
+                        <div>
+                            <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-sm btn-light border rounded-pill">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
                     @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">Keine Termine gefunden.</td>
-                    </tr>
+                    <p class="text-muted text-center py-4">Noch keine Bestellungen.</p>
                     @endforelse
-                </tbody>
-            </table>
+                </div>
+                
+                <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-dark btn-sm w-100 mt-auto rounded-pill py-2">Alle Bestellungen anzeigen</a>
+            </div>
         </div>
     </div>
 </div>
@@ -195,8 +213,11 @@
 <style>
     .icon-box { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
     .icon-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .admin-nav-card:hover { transform: translateY(-5px); transition: 0.3s; background-color: #fafafa; }
-    .table thead th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; padding-top: 15px; padding-bottom: 15px; }
-    .bg-gold-dark { background-color: #d4a373; }
+    .admin-nav-card { transition: all 0.3s ease; }
+    .admin-nav-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important; background-color: #fafafa; }
+    .text-gold-dark { color: #d4a373 !important; }
+    .bg-gold-dark { background-color: #d4a373 !important; }
+    .small-caps { font-variant: small-caps; letter-spacing: 1px; }
+    .hover-bg-light:hover { background-color: #f8f9fa; }
 </style>
 @endsection

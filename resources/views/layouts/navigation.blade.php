@@ -19,6 +19,17 @@
                         Webshop <i class="bi bi-bag-heart ms-1"></i>
                     </a>
                 </li>
+
+                <li class="nav-item position-relative ms-lg-3">
+                    <a class="nav-link text-dark" href="{{ route('cart.index') }}">
+                        <i class="bi bi-cart3 fs-4"></i>
+                        @if(session('cart') && count(session('cart')) > 0)
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gold">
+                                {{ count(session('cart')) }}
+                            </span>
+                        @endif
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link nav-link-custom" href="{{ url('/contact') }}">Kontakt</a>
                 </li>
