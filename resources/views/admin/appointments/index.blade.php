@@ -190,7 +190,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="mb-0 fw-bold">{{ $order->first_name }} {{ $order->last_name }}</h6>
+                            <h6 class="mb-0 fw-bold text-dark">{{ $order->first_name }} {{ $order->last_name }}</h6>
                             <small class="text-muted">{{ number_format($order->total_price, 2) }} € • {{ $order->created_at->diffForHumans() }}</small>
                         </div>
                         <div>
@@ -205,6 +205,45 @@
                 </div>
                 
                 <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-dark btn-sm w-100 mt-auto rounded-pill py-2">Alle Bestellungen anzeigen</a>
+            </div>
+        </div>
+    </div>
+
+    {{-- DODATA SEKCIJA: Inventar / Proizvodi --}}
+    <div class="row g-4 mt-3">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm p-4" style="border-radius: 15px;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0 small-caps"><i class="bi bi-box-seam me-2 text-info"></i>Lagerbestand & Produkte</h4>
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                        Alle Produkte
+                    </a>
+                </div>
+
+                <div class="row g-3">
+                    {{-- Prikazujemo top 4 proizvoda sa najnižim stanjem --}}
+                    @php 
+                        $lowStockProducts = \App\Models\Product::orderBy('stock', 'asc')->take(4)->get(); 
+                    @endphp
+                    
+                    @foreach($lowStockProducts as $product)
+                    <div class="col-md-3">
+                        <div class="p-3 border rounded bg-light bg-opacity-50">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="fw-bold text-dark text-truncate" style="max-width: 150px;">{{ $product->name }}</span>
+                                <span class="badge {{ $product->stock < 5 ? 'bg-danger' : 'bg-success' }} rounded-pill">
+                                    {{ $product->stock }} Stk.
+                                </span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar {{ $product->stock < 5 ? 'bg-danger' : 'bg-info' }}" 
+                                     role="progressbar" 
+                                     style="width: {{ min(($product->stock / 20) * 100, 100) }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
