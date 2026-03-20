@@ -6,6 +6,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmed;
 
 class CartController extends Controller
 {
@@ -103,6 +105,9 @@ class CartController extends Controller
         }
 
         session()->forget('cart');
+
+        // Slanje mejla kupcu
+        Mail::to($order->email)->send(new OrderConfirmed($order));
 
         return redirect()->route('products.index')->with('success', 'Vielen Dank! Ihre Bestellung #' . $order->id . ' ist eingegangen.');
     }
