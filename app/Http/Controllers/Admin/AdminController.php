@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\Service;
@@ -39,7 +40,7 @@ class AdminController extends Controller
         // Razdvajamo ih (opciono, ako želiš da ih u blade-u koristiš odvojeno)
         $booked = $appointments->whereNotNull('user_id');
         $availableSlots = $appointments->whereNull('user_id');
-        $latest_orders = \App\Models\Order::orderBy('created_at', 'desc')->take(5)->get();
+        $latest_orders = Order::orderBy('created_at', 'desc')->take(5)->get();
         return view('admin.appointments.index', compact('appointments', 'stats', 'booked', 'availableSlots', 'latest_orders'));
     }
 

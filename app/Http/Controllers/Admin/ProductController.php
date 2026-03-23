@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Traits\ImageUploadTrait; 
@@ -11,13 +12,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    use ImageUploadTrait; // Koristi trait
+    use ImageUploadTrait; 
 
-    public function index()
-    {
-        $products = Product::all();
-        return view('products.index', compact('products'));
-    }
 
     public function adminIndex()
     {

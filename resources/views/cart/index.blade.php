@@ -46,7 +46,7 @@
                 <div class="card border-0 shadow-sm p-4">
                     <h4 class="fw-bold mb-3">Gesamtsumme: <span class="text-gold">{{ number_format($total, 2) }} €</span></h4>
                     <div class="d-flex gap-2 justify-content-end">
-                        <a href="{{ route('products.index') }}" class="btn btn-outline-secondary px-4">Weiter shoppen</a>
+                        <a href="{{ route('shop.index') }}" class="btn btn-outline-secondary px-4">Weiter shoppen</a>
                         <a href="{{ route('checkout') }}" class="btn btn-dark px-5 fw-bold">ZUR KASSE</a>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
         <div class="text-center py-5">
             <i class="bi bi-bag-x display-1 text-muted"></i>
             <h3 class="mt-3">Vaša korpa je prazna.</h3>
-            <a href="{{ route('products.index') }}" class="btn btn-diamond-outline mt-3">PROIZVODI</a>
+            <a href="{{ route('shop.index') }}" class="btn btn-diamond-outline mt-3">PROIZVODI</a>
         </div>
     @endif
 </div>

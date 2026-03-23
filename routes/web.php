@@ -3,13 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\MessageController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\ShopController;
 
 // 1. JAVNE RUTE
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -20,7 +21,8 @@ Auth::routes();
 
 // 3. KLIJENTSKI RESURSI
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/shop/{product}', [ShopController::class, 'show'])->name('shop.show');
 Route::middleware('auth')->group(function () {
     Route::patch('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
     Route::resource('appointments', AppointmentController::class);

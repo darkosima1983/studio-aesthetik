@@ -15,7 +15,7 @@
                     <a class="nav-link nav-link-custom" href="{{ url('/services') }}">Dienstleistungen</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-custom" href="{{ url('/products') }}">
+                    <a class="nav-link nav-link-custom" href="{{ url('/shop') }}">
                         Webshop <i class="bi bi-bag-heart ms-1"></i>
                     </a>
                 </li>
