@@ -41,7 +41,7 @@ class AppointmentController extends Controller
         return view('appointments.create', compact('services', 'availableAppointments'));
     }
 
-    public function store(Request $request)
+    public function store(StoreAppointmentRequest $request)
     {
         // 1. Klijent šalje ID slota koji je izabrao
         $appointment = Appointment::findOrFail($request->appointment_id);
@@ -75,35 +75,5 @@ class AppointmentController extends Controller
         return back()->with('success', 'Dein Termin wurde erfolgreich storniert.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    
 }

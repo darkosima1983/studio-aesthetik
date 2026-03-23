@@ -4,6 +4,9 @@
 <div class="container py-5 mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">EINGEGANGENE BESTELLUNGEN</h2>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-dark btn-sm">
+            <i class="bi bi-arrow-left"></i> Dashboard
+        </a>
     </div>
 
     <div class="card border-0 shadow-sm">

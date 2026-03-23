@@ -38,7 +38,7 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Produkt u korpu dodat!');
     }
 
-    // Update količine (koristićemo AJAX ili običan Submit)
+    // Update količine u korpi
     public function update(Request $request)
     {
         if($request->id && $request->quantity) {
