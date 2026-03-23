@@ -39,24 +39,17 @@ class ProductController extends Controller
     }
 
     // 3. Čuvanje izmena (Update)
-    public function update(\Illuminate\Http\Request $request, Product $product)
+    public function update(StoreProductRequest $request, Product $product)
     {
-        // Validacija (možeš napraviti i poseban UpdateProductRequest)
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'description' => 'nullable|string',
-            'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-        ]);
+        // Uzimamo već proverene podatke
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             // Obriši staru sliku pre nego što staviš novu
             if ($product->image) {
                 $this->deleteImage($product->image);
             }
-            // Konverzija u WebP preko tvog Traita
+            // Upload nove slike preko Traita
             $validated['image'] = $this->uploadImageWebp($request->file('image'), 'products');
         }
 

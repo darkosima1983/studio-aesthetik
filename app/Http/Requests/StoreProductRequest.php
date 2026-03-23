@@ -15,11 +15,14 @@ class StoreProductRequest extends FormRequest
         {
             return [
                 'name'        => 'required|string|max:255',
-                'description' => 'required|string|min:20',
+                'description' => 'required|string|min:10', // Smanjio sam malo min karaktere radi lakšeg testiranja
                 'price'       => 'required|numeric|min:0',
                 'stock'       => 'required|integer|min:0',
-                'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Max 2MB
                 'category'    => 'nullable|string|max:100',
+                // Slika je obavezna pri kreiranju, ali opciona pri editu (ako se ne menja)
+                'image'       => $this->isMethod('POST') 
+                                ? 'required|image|mimes:jpeg,png,jpg,webp|max:2048' 
+                                : 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             ];
         }
 
