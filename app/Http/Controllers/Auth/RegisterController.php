@@ -18,7 +18,7 @@ class RegisterController extends Controller
     protected function redirectTo()
     {
         // Pošto je ovo registracija, novi korisnik je uvek klijent
-        return route('appointments.index');
+        return '/';
     }
 
     public function __construct()

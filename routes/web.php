@@ -51,7 +51,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // .names('services') automatski pravi admin.services.index, admin.services.create itd.
     Route::resource('services', ServiceController::class)->names('services');
     
-    Route::get('products', [ProductController::class, 'adminIndex'])->name('products.index');
+    Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
     Route::resource('products', ProductController::class)->except(['index'])->names('products');
 
     // Upravljanje Porukama (Admin pregled i brisanje)
@@ -86,3 +86,4 @@ Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.rem
 // Checkout (privremeno samo view)
 Route::get('/checkout', function() { return view('cart.checkout'); })->name('checkout');
 Route::post('/place-order', [CartController::class, 'placeOrder'])->name('order.place');
+

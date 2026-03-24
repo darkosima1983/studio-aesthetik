@@ -14,7 +14,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+        $middleware->redirectTo(
+        guests: '/login',
+        users: '/' // Ovde postavi putanju gde želiš da klijent ide (npr. '/' ili '/shop')
+    );
     })
+    
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
+    

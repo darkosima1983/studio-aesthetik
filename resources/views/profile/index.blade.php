@@ -119,7 +119,7 @@
                     <div class="text-center py-4">
                         <i class="bi bi-cart-x fs-2 text-muted d-block mb-2"></i>
                         <p class="text-muted small">Sie haben noch keine Produkte bestellt.</p>
-                        <a href="{{ route('products.index') }}" class="btn btn-sm btn-outline-dark rounded-pill px-4">Zum Shop</a>
+                        <a href="{{ route('shop.index') }}" class="btn btn-sm btn-outline-dark rounded-pill px-4">Zum Shop</a>
                     </div>
                 @endif
             </div>
