@@ -65,7 +65,49 @@
             </div>
         </div>
     </div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3" style="border-left: 4px solid #198754 !important;">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-success bg-opacity-10 p-3 rounded">
+                        <i class="bi bi-currency-euro text-success fs-4"></i>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="text-muted mb-0 small uppercase">Gesamtumsatz</h6>
+                        <span class="h4 fw-bold">{{ number_format($stats['total_revenue'], 2, ',', '.') }} €</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3" style="border-left: 4px solid #0d6efd !important;">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded">
+                        <i class="bi bi-calendar-check text-primary fs-4"></i>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="text-muted mb-0 small uppercase">Termine (Diesen Monat)</h6>
+                        <span class="h4 fw-bold">{{ $stats['month_apps'] }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3" style="border-left: 4px solid #6f42c1 !important;">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-purple bg-opacity-10 p-3 rounded" style="background-color: #f3e8ff;">
+                        <i class="bi bi-people text-purple fs-4" style="color: #6f42c1;"></i>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="text-muted mb-0 small uppercase">Kundenanzahl</h6>
+                        <span class="h4 fw-bold">{{ $stats['total_users'] }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {{-- BRZI LINKOVI (Srednji red) --}}
     <div class="row g-3 mb-5">
         <div class="col-md-3 col-6">

@@ -27,6 +27,7 @@ class AdminController extends Controller
         $appointments = Appointment::with(['user', 'service'])
             ->orderBy('date', 'asc')
             ->orderBy('time', 'asc')
+            ->take(10)
             ->get();
             
         // Statistika za Dashboard kartice
@@ -36,12 +37,22 @@ class AdminController extends Controller
             'pending'        => Appointment::where('status', 'pending')->count(), // Zahtevi za termine
             'today'          => Appointment::whereDate('date', now())->count(),
             'messages'       => Message::where('is_read', false)->count(),
+            // 1. Ukupna zarada od završenih porudžbina
+            'total_revenue'  => Order::where('status', 'completed')->sum('total_price'),
+            
+            // 2. Broj zakazanih termina u ovom mesecu
+            'month_apps'     => Appointment::whereMonth('date', now()->month)
+                                            ->whereYear('date', now()->year)
+                                            ->count(),
+                                            
+            // 3. Broj registrovanih klijenata
+            'total_users'    => User::where('role', 'user')->count(),
         ];
 
         // Razdvajamo ih (opciono, ako želiš da ih u blade-u koristiš odvojeno)
         $booked = Appointment::whereNotNull('user_id')->with(['user', 'service'])->get();
         $availableSlots = Appointment::whereNull('user_id')->get();
-        $latest_orders = Order::orderBy('created_at', 'desc')->take(5)->get();
+        $latest_orders = Order::with('user')->orderBy('created_at', 'desc')->take(5)->get();
         return view('admin.appointments.index', compact('appointments', 'stats', 'booked', 'availableSlots', 'latest_orders'));
     }
 
