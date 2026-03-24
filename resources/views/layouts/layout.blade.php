@@ -85,12 +85,40 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             margin-top: 20px;
         }
+        .demo-banner {
+        background-color: #ffc107;
+        color: #000;
+        text-align: center;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        width: 100%;
+        z-index: 1050; /* Iznad navigacije */
+        position: relative;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    /* Ako želiš da banner uvek stoji fiksiran na vrhu:
+    .demo-banner {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    body { padding-top: 40px; } 
+    */
     </style>
 </head>
 <body>
+   <body>
+    @if(config('app.demo_mode'))
+        <div class="demo-banner">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong>DEMO MODUS:</strong> Dies ist eine Testseite. Alle Buchungen und Bestellungen sind fiktiv.
+        </div>
+    @endif
 
     @include('layouts.navigation')
-
+    
     <div class="{{ Request::is('/') ? 'home-padding' : 'content-padding container' }}">
         
         @if(session('success'))

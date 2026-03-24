@@ -11,11 +11,13 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\ShopController;
-
+use App\Http\Controllers\LegalController;
 // 1. JAVNE RUTE
 Route::get('/', function () { return view('welcome'); })->name('welcome');
 Route::get('/contact', function () { return view('contact'); })->name('contact');
 
+Route::get('/impressum', [LegalController::class, 'impressum'])->name('legal.impressum');
+Route::get('/datenschutz', [LegalController::class, 'datenschutz'])->name('legal.datenschutz');
 // 2. AUTENTIFIKACIJA
 Auth::routes();
 

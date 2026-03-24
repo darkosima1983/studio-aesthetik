@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    // config/app.php
+    'demo_mode' => env('APP_DEMO_MODE') === true || env('APP_DEMO_MODE') === 'true',
+
 ];
