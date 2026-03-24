@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold mb-0">Nachrichten (Inbox)</h2>
-            <p class="text-muted">Hier finden Sie alle Anfragen preko kontakt forme.</p>
+            <p class="text-muted">Hier finden Sie alle Anfragen aus dem Kontaktformular.</p>
         </div>
         <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-dark">
             <i class="bi bi-arrow-left me-2"></i>Dashboard

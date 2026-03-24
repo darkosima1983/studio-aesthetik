@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\AppointmentApproved;
 use App\Mail\AppointmentCancelled;
 use App\Models\Order;
+use App\Http\Requests\Admin\StoreSlotRequest;
 
 class AdminController extends Controller
 {
@@ -38,8 +39,8 @@ class AdminController extends Controller
         ];
 
         // Razdvajamo ih (opciono, ako želiš da ih u blade-u koristiš odvojeno)
-        $booked = $appointments->whereNotNull('user_id');
-        $availableSlots = $appointments->whereNull('user_id');
+        $booked = Appointment::whereNotNull('user_id')->with(['user', 'service'])->get();
+        $availableSlots = Appointment::whereNull('user_id')->get();
         $latest_orders = Order::orderBy('created_at', 'desc')->take(5)->get();
         return view('admin.appointments.index', compact('appointments', 'stats', 'booked', 'availableSlots', 'latest_orders'));
     }
@@ -49,21 +50,10 @@ class AdminController extends Controller
      */
 
     // 1. Stvaranje PRAZNOG slota koji klijenti vide
-   public function storeSlot(Request $request)
+   public function storeSlot(StoreSlotRequest $request)
     {
-        // Provera da li već postoji ovakav termin
-        $exists = Appointment::where('date', $request->date)
-                            ->where('time', $request->time)
-                            ->exists();
-
-        if ($exists) {
-            return back()->with('error', 'Dieser Termin existiert bereits!');
-        }
-
-        // Ako ne postoji, napravi ga
-        Appointment::create([
-            'date' => $request->date,
-            'time' => $request->time,
+        // Ako kod dođe do ovde, znači da su datum i vreme već validni i unikatni
+        Appointment::create($request->validated() + [
             'user_id' => null,
             'status' => null
         ]);
@@ -130,9 +120,14 @@ class AdminController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'Benutzer wurde gelöscht.');
     }
 
-    public function updateNotes(Request $request, User $user)
+   public function updateNotes(Request $request, User $user)
     {
-        $user->update(['notes' => $request->notes]);
+        
+        $data = $request->validate([
+            'notes' => 'nullable|string|max:1000'
+        ]);
+
+        $user->update($data);
         return back()->with('success', 'Notizen wurden aktualisiert!');
     }
 }
