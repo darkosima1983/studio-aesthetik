@@ -35,7 +35,7 @@ class CartController extends Controller
         }
 
         session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Produkt u korpu dodat!');
+        return redirect()->back()->with('success', 'Produkt in den Warenkorb gelegt!');
     }
 
     // Update količine u korpi

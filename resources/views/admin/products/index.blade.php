@@ -7,6 +7,9 @@
         <a href="{{ route('admin.products.create') }}" class="btn btn-dark rounded-pill px-4">
             <i class="bi bi-plus-lg me-2"></i>Neues Produkt
         </a>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left me-2"></i>Dashboard
+        </a>
     </div>
 
     <div class="card border-0 shadow-sm p-4">

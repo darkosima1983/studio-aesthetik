@@ -27,7 +27,6 @@ class AdminController extends Controller
         $appointments = Appointment::with(['user', 'service'])
             ->orderBy('date', 'asc')
             ->orderBy('time', 'asc')
-            ->take(10)
             ->get();
             
         // Statistika za Dashboard kartice

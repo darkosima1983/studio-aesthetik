@@ -14,6 +14,6 @@
     <p><strong>Kontaktformular:</strong> Wenn Sie uns Anfragen zukommen lassen, werden Ihre Angaben zwecks Bearbeitung der Anfrage gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>
 
     <h3>3. Hosting</h3>
-    <p>Diese Webseite wird auf Servern von [Ime tvog hostinga, npr. Hetzner] gehostet. Der Standort der Server ist Deutschland/EU.</p>
+    <p>Diese Webseite wird auf Servern von Hetzner gehostet. Der Standort der Server ist Deutschland/EU.</p>
 </div>
 @endsection
